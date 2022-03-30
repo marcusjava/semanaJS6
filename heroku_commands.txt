@@ -11,6 +11,7 @@ git push
 heroku apps:create spotify-js
 git remote -v
 heroku stack:set container
+git push heroku master
 
 
 
