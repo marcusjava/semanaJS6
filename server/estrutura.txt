@@ -1,0 +1,6 @@
+service - regra de negocio
+controller - intermediar camada de apresentação e serviço
+routes - camada de apresentação
+server - cria o servidor mas nao instancia
+index - instancia o servidor 
+config - tudo que for estatico no projeto

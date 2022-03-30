@@ -1,0 +1,8 @@
+build 
+  docker:
+    web: dockerfile
+  config: 
+    PORT: 3000
+
+run: 
+  web: npm start
