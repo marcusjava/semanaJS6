@@ -1,0 +1,16 @@
+heroku.yml
+npm i -g heroku
+heroku login
+
+git init
+npx gitignore node
+
+git add . &&  git commit -m "Deploy"
+git push
+
+heroku apps:create spotify-js
+git remote -v
+heroku stack:set container
+
+
+
