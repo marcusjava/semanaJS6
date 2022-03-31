@@ -11,7 +11,6 @@ export class Controller {
   }
 
   async handleCommand({ command }) {
-    console.log(command);
     const cmd = command.toLowerCase();
     const result = {
       result: "ok",

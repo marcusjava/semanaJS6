@@ -1,17 +1,26 @@
 import { jest, expect, describe, test, beforeEach } from "@jest/globals";
 import config from "../../../server/config.js";
-import { Controller } from "../../../server/controller.js";
+import childProcess from "child_process";
+import streamsPromises from "stream/promises";
 import { Service } from "../../../server/service.js";
-import { handler } from "../../../server/routes.js";
 import TestUtil from "../_util/testUtil.js";
 import fs from "fs";
 import fsPromises from "fs/promises";
+import Throttle from "throttle";
+import { PassThrough, Writable } from "stream";
+import path from "path";
 
 const {
   pages,
   location,
-  constants: { CONTENT_TYPE },
-  dir: { publicDirectory },
+  constants: {
+    fallbackBitRate,
+    bitrateDivisor,
+    audioMediaType,
+    songVolume,
+    fxVolume,
+  },
+  dir: { publicDirectory, rootDir, fx: fxDir },
 } = config;
 
 describe("Service test suite", () => {
@@ -19,6 +28,9 @@ describe("Service test suite", () => {
     jest.restoreAllMocks();
     jest.clearAllMocks();
   });
+
+  test.todo("should create a stream when call #createClientStream");
+  test.todo("should remove a stream when call #removeClientStream");
 
   test("getFileStream should return stream and type correctly", async () => {
     const filename = "/index.html";

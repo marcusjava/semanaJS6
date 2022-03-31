@@ -63,6 +63,29 @@ describe("Routes test suite for API response", () => {
     );
     expect(mockFileStream.pipe).toHaveBeenCalledWith(params.response);
   });
+  test("POST /controller - should handle command to server", async () => {
+    const params = TestUtil.defaultHandlerParams();
+    params.request.method = "POST";
+    params.request.url = "/controller";
+    const data = { command: "start" };
+    params.request.push(JSON.stringify(data));
+    const expectedResponse = {
+      result: "ok",
+    };
+
+    const handleCommandMock = jest
+      .spyOn(Controller.prototype, Controller.prototype.handleCommand.name)
+      .mockResolvedValue({
+        result: "ok",
+      });
+
+    await handler(...params.values());
+
+    expect(handleCommandMock).toHaveBeenCalledWith(data);
+    expect(params.response.end).toHaveBeenCalledWith(
+      JSON.stringify(expectedResponse)
+    );
+  });
   test("GET /index.html - should response with file stream", async () => {
     const params = TestUtil.defaultHandlerParams();
     params.request.method = "GET";
@@ -122,6 +145,37 @@ describe("Routes test suite for API response", () => {
     await handler(...params.values());
     expect(params.response.writeHead).toBeCalledWith(404);
     expect(params.response.end).toHaveBeenCalled();
+  });
+
+  test("GET /stream - should return a stream", async () => {
+    const params = TestUtil.defaultHandlerParams();
+    params.request.method = "GET";
+    params.request.url = "/stream";
+
+    const stream = TestUtil.generateReadableStream(["stream"]);
+
+    const onClose = jest.fn();
+
+    jest.spyOn(stream, "pipe").mockReturnValue();
+
+    const streamMock = jest
+      .spyOn(Controller.prototype, Controller.prototype.createClientStream.name)
+      .mockReturnValue({ stream, onClose });
+
+    await handler(...params.values());
+
+    params.request.emit("close");
+
+    expect(streamMock).toHaveBeenCalled();
+
+    expect(params.response.writeHead).toHaveBeenCalledWith(200, {
+      "Content-Type": "audio/mpeg",
+      "Accept-Rages": "bytes",
+    });
+
+    expect(stream.pipe).toHaveBeenCalledWith(params.response);
+
+    expect(onClose).toHaveBeenCalled();
   });
 
   describe("Response exceptions errors", () => {

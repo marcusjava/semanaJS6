@@ -15,3 +15,5 @@ git push heroku master
 
 
 
+heroku open
+heroku logs -t -a spotify-js

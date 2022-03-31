@@ -34,7 +34,6 @@ export class Service {
     const id = randomUUID();
     const clientStream = new PassThrough();
     this.clientStreams.set(id, clientStream);
-
     return {
       id,
       clientStream,
@@ -102,6 +101,7 @@ export class Service {
 
   async readFxByName(fxName) {
     const songs = await fsPromises.readdir(fxDirectory);
+    console.log(songs);
     const chosenSong = songs.find((filename) =>
       filename.toLowerCase().includes(fxName)
     );
