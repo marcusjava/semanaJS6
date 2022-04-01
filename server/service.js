@@ -15,7 +15,7 @@ const {
   constants: {
     fallbackBitRate,
     englishConversation,
-    bitRateDivisor,
+    bitrateDivisor,
     audioMediaType,
     fxVolume,
     songVolume,
@@ -66,7 +66,7 @@ export class Service {
   async startStream() {
     logger.info(`starting with ${this.currentSong}`);
     const bitRate = (this.currentBitRate =
-      (await this.getBitRate(this.currentSong)) / bitRateDivisor);
+      (await this.getBitRate(this.currentSong)) / bitrateDivisor);
     const throttleTransform = (this.throttleTransform = new Throttle(bitRate));
     const songReadable = (this.currentReadable = this.createFileStream(
       this.currentSong

@@ -34,7 +34,7 @@ export default {
     songVolume: "0.99",
     fxVolume: "0.1",
     fallbackBitRate: "128000",
-    bitRateDivisor: 8,
+    bitrateDivisor: 8,
     englishConversation: join(songsDirectory, "conversation.mp3"),
   },
 };
