@@ -29,6 +29,13 @@ describe("View test suite", () => {
     jest.spyOn(document, "getElementById").mockReturnValue(makeBtnElement());
   });
 
+  test("#onLoad - should add unassigned class and reset onClick", () => {
+    const view = new View();
+    jest.spyOn(view, view.changeButtonVisibility.name).mockReturnValue();
+    view.onLoad();
+    expect(view.changeButtonVisibility).toHaveBeenCalled();
+  });
+
   test("#changeButtonVisibility - given hide=true it should add unassigned class and reset onClick", () => {
     const view = new View();
     const btn = makeBtnElement();
@@ -48,10 +55,15 @@ describe("View test suite", () => {
     expect(btn.onclick.name).toStrictEqual("onClickReset");
     expect(() => btn.onclick()).not.toThrow();
   });
-  test("#onLoad - should add unassigned class and reset onClick", () => {
+  test.only("#configureOnBtnClick - set fn to onBtnClick", async () => {
+    const result = {
+      result: "ok",
+    };
     const view = new View();
-    jest.spyOn(view, view.changeButtonVisibility.name).mockReturnValue();
-    view.onLoad();
-    expect(view.changeButtonVisibility).toHaveBeenCalled();
+    view.onBtnClick = jest.fn();
+    const fnCall = jest.fn();
+
+    view.configureOnBtnClick(fnCall);
+    expect(view.onBtnClick).toHaveBeenCalled();
   });
 });
